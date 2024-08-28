@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 8</title>
+    <link rel="stylesheet" href="../home/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="../home/Index.html">🏠 Home</a></li>
+            <li><a href="../1/task1.html">Task 1️</a></li>
+            <li><a href="../2/task2.html">Task 2</a></li>
+            <li><a href="../3/task3.html">Task 3</a></li>
+            <li><a href="../4/task4.html">Task 4</a></li>
+            <li><a href="../5/task5.html">Task 5</a></li>
+            <li><a href="../6/task6.html">Task 6</a></li>
+            <li><a href="../7/task7.html">Task 7</a></li>
+            <li><a href="../8/task8.html">Task 8</a></li>
+            <li><a href="../9/task9.html">Task 9</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>Teachers with Subjects Having Highest Scores Over 97</h1>
+        <button id="fetchData">Fetch Data</button>
+        <div id="teachersList" class="teachers-list"></div>
+    </div>
+
+    <script>
+        document.getElementById('fetchData').addEventListener('click', async () => {
+            try {
+                const response = await fetch('http://localhost:5140/api/tasks/teachers_with_high_scoring_subjects');
+                const teachers = await response.json();
+
+                const teachersList = document.getElementById('teachersList');
+                teachersList.innerHTML = ''; // Clear previous data
+
+                if (teachers.length > 0) {
+                    teachers.forEach(teacher => {
+                        const teacherCard = document.createElement('div');
+                        teacherCard.classList.add('teacher-card');
+
+                        // Join subjects into a string
+                        const subjects = teacher.subjects.map(subject => subject.subjectName).join(', ');
+
+                        teacherCard.innerHTML = `
+                            <h2>${teacher.firstName} ${teacher.lastName}</h2>
+                            <p>Subject: ${subjects}</p>
+                        `;
+                        teachersList.appendChild(teacherCard);
+                    });
+                } else {
+                    teachersList.innerHTML = '<p>No teachers found with subjects having highest scores over 97.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('teachersList').innerHTML = '<p>An error occurred while fetching data.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

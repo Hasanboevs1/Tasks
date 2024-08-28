@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <link rel="stylesheet" href="../home/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="../home/Index.html">🏠 Home</a></li>
+            <li><a href="../1/task1.html">Task 1️</a></li>
+            <li><a href="../2/task2.html">Task 2</a></li>
+            <li><a href="../3/task3.html">Task 3</a></li>
+            <li><a href="../4/task4.html">Task 4</a></li>
+            <li><a href="../5/task5.html">Task 5</a></li>
+            <li><a href="../6/task6.html">Task 6</a></li>
+            <li><a href="../7/task7.html">Task 7</a></li>
+            <li><a href="../8/task8.html">Task 8</a></li>
+            <li><a href="../9/task9.html">Task 9</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>Students Under 20</h1>
+        <button id="fetchData">Show Students Under 20</button>
+        <div id="studentsList" class="students-list"></div>
+    </div>
+    
+    <script>
+        function calculateAge(birthDate) {
+            const today = new Date();
+            const birthDateObj = new Date(birthDate);
+            let age = today.getFullYear() - birthDateObj.getFullYear();
+            const monthDifference = today.getMonth() - birthDateObj.getMonth();
+            
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+
+        document.getElementById('fetchData').addEventListener('click', async () => {
+            const response = await fetch('http://localhost:5140/api/tasks/under20yearsold_students'); // Replace with the actual API endpoint
+            const students = await response.json();
+
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = ''; // Clear the list before adding new items
+
+            students.forEach(student => {
+                const age = calculateAge(student.birthDate);
+                const studentCard = document.createElement('div');
+                studentCard.classList.add('student-card');
+                studentCard.innerHTML = `
+                    <h2>${student.firstName} ${student.lastName}</h2>
+                    <p>Age: ${age}</p>
+                `;
+                studentsList.appendChild(studentCard);
+            });
+        });
+    </script>
+</body>
+</html>

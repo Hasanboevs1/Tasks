@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 9</title>
+    <link rel="stylesheet" href="../home/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="../home/Index.html">🏠 Home</a></li>
+            <li><a href="../1/task1.html">Task 1️</a></li>
+            <li><a href="../2/task2.html">Task 2</a></li>
+            <li><a href="../3/task3.html">Task 3</a></li>
+            <li><a href="../4/task4.html">Task 4</a></li>
+            <li><a href="../5/task5.html">Task 5</a></li>
+            <li><a href="../6/task6.html">Task 6</a></li>
+            <li><a href="../7/task7.html">Task 7</a></li>
+            <li><a href="../8/task8.html">Task 8</a></li>
+            <li><a href="../9/task9.html">Task 9</a></li>
+        </ul>
+    </nav>
+    
+    <div class="content">
+        <h1>Subject with the Highest Average Student Grade</h1>
+        <button id="fetchData">Fetch Data</button>
+        <div id="subjectInfo" class="subject-info"></div>
+    </div>
+
+    <script>
+        document.getElementById('fetchData').addEventListener('click', async () => {
+            const response = await fetch('http://localhost:5140/api/tasks/subject_with_highest_average_grade'); // Replace with the actual API endpoint
+            const subject = await response.json();
+
+            const subjectInfo = document.getElementById('subjectInfo');
+            subjectInfo.innerHTML = ''; // Clear previous data
+
+            if (subject && subject.name) {
+                subjectInfo.innerHTML = `
+                    <h2>Subject: ${subject.name}</h2>
+                `;
+            } else {
+                subjectInfo.innerHTML = '<p>No data available for subjects.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
